@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Showcase</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+
+    .product-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+    }
+
+    .product-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-info h2 {
+      font-size: 1.3rem;
+      margin: 0 0 10px;
+    }
+
+    .product-info p {
+      margin: 0 0 10px;
+      flex: 1;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .product-info .price-stock {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .product-info button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .product-info button:hover {
+      background: #0056b3;
+    }
+
+    .product-card-footer {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .product-card-footer a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .product-card-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .form-wrapper {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-wrapper label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-wrapper input,
+    .form-wrapper textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-wrapper button {
+      background: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-wrapper button:hover {
+      background: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Product Showcase</h1>
+
+  <div class="product-container">
+    {% for pro in prod %}
+    <div class="product-card">
+      <img src="{{ pro.image }}" alt="{{ pro.name }}">
+      <div class="product-info">
+        <h2>{{ pro.name }}</h2>
+        <div class="price-stock">₹{{ pro.price }} &middot; In Stock: {{ pro.stock }}</div>
+        <p>{{ pro.description }}</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card-footer">
+        <a href="{% url 'edit_product' pro.id %}">Edit</a>
+        <a href="{% url 'delete_product' pro.id %}">Delete</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="form-wrapper">
+    <h2>Submit Product</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ fm.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>
